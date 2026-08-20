@@ -15,4 +15,7 @@
 - (void)stopMonitoring;
 - (BatteryInfo *)fetchCurrentInfo;
 
++ (BOOL)isLowPowerModeEnabled;
++ (void)setLowPowerModeEnabled:(BOOL)enabled completion:(void(^)(BOOL success, NSString *errorMessage))completion;
+
 @end

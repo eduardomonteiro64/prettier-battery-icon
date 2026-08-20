@@ -1,4 +1,5 @@
 #import "BatteryInfo.h"
+#import "LocalizationManager.h"
 
 @implementation BatteryInfo
 
@@ -11,19 +12,26 @@
         _healthPercentage = -1;
         _condition = @"Normal";
         _powerSourceDescription = @"Battery";
+        _isLowPowerMode = NO;
+        _rawMaxCapacity = 0;
+        _designCapacity = 0;
+        _temperatureCelsius = 0.0;
+        _adapterWatts = 0;
+        _serialNumber = @"";
+        _manufacturer = @"";
     }
     return self;
 }
 
 - (NSString *)formattedTimeRemaining {
     if (self.isFullyCharged) {
-        return @"Fully Charged";
+        return PBLocalizedString(@"Fully Charged", nil);
     }
     if (self.timeRemainingMinutes < 0) {
         if (self.isCharging) {
-            return @"Calculating charge time...";
+            return PBLocalizedString(@"Calculating charge time...", nil);
         } else {
-            return @"Calculating time remaining...";
+            return PBLocalizedString(@"Calculating time remaining...", nil);
         }
     }
     
@@ -32,30 +40,36 @@
     
     if (self.isCharging) {
         if (hours > 0) {
-            return [NSString stringWithFormat:@"%ldh %02ldm until 100%%", (long)hours, (long)minutes];
+            return [NSString stringWithFormat:PBLocalizedString(@"%ldh %02ldm until 100%%", nil), (long)hours, (long)minutes];
         } else {
-            return [NSString stringWithFormat:@"%ldm until 100%%", (long)minutes];
+            return [NSString stringWithFormat:PBLocalizedString(@"%ldm until 100%%", nil), (long)minutes];
         }
     } else {
         if (hours > 0) {
-            return [NSString stringWithFormat:@"%ldh %02ldm remaining", (long)hours, (long)minutes];
+            return [NSString stringWithFormat:PBLocalizedString(@"%ldh %02ldm remaining", nil), (long)hours, (long)minutes];
         } else {
-            return [NSString stringWithFormat:@"%ldm remaining", (long)minutes];
+            return [NSString stringWithFormat:PBLocalizedString(@"%ldm remaining", nil), (long)minutes];
         }
     }
 }
 
 - (NSString *)formattedStateString {
+    NSString *baseState;
     if (self.isFullyCharged) {
-        return @"Fully Charged (Power Adapter)";
+        baseState = PBLocalizedString(@"Fully Charged (Power Adapter)", nil);
+    } else if (self.isCharging) {
+        baseState = PBLocalizedString(@"Charging on AC Power", nil);
+    } else if (self.isACConnected) {
+        baseState = PBLocalizedString(@"Connected to Power (Not Charging)", nil);
+    } else {
+        baseState = PBLocalizedString(@"On Battery Power", nil);
     }
-    if (self.isCharging) {
-        return @"Charging on AC Power";
+    
+    if (self.isLowPowerMode) {
+        return [NSString stringWithFormat:@"%@ • %@", baseState, PBLocalizedString(@"Low Power Mode", nil)];
     }
-    if (self.isACConnected) {
-        return @"Connected to Power (Not Charging)";
-    }
-    return @"On Battery Power";
+    return baseState;
 }
 
 @end
+

@@ -39,13 +39,14 @@ int main(int argc, const char * argv[]) {
         [@"Prettier Battery for macOS — Native Typography & Flat Icon Scheme" drawAtPoint:NSMakePoint(40, height - 44) withAttributes:titleAttr];
         
         NSArray *items = @[
-            @{@"label": @"Critical Battery (≤15%)", @"pct": @10, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO},
-            @{@"label": @"Medium Battery (16–40%)", @"pct": @30, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO},
-            @{@"label": @"Full Battery (>40%)", @"pct": @100, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO},
-            @{@"label": @"Charging (Bolt)", @"pct": @65, @"charging": @YES, @"ac": @YES, @"warn": @NO, @"miss": @NO},
-            @{@"label": @"Warning / Service", @"pct": @50, @"charging": @NO, @"ac": @NO, @"warn": @YES, @"miss": @NO},
-            @{@"label": @"Power Connected (Plug)", @"pct": @100, @"charging": @NO, @"ac": @YES, @"warn": @NO, @"miss": @NO},
-            @{@"label": @"No Battery / Error", @"pct": @0, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @YES}
+            @{@"label": @"Critical Battery (≤15%)", @"pct": @10, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO, @"lpm": @NO},
+            @{@"label": @"Medium Battery (16–40%)", @"pct": @30, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO, @"lpm": @NO},
+            @{@"label": @"Full Battery (>40%)", @"pct": @100, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO, @"lpm": @NO},
+            @{@"label": @"Low Power Mode (Yellow)", @"pct": @80, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO, @"lpm": @YES},
+            @{@"label": @"Charging (Bolt)", @"pct": @65, @"charging": @YES, @"ac": @YES, @"warn": @NO, @"miss": @NO, @"lpm": @NO},
+            @{@"label": @"Power Connected (Plug)", @"pct": @100, @"charging": @NO, @"ac": @YES, @"warn": @NO, @"miss": @NO, @"lpm": @NO},
+            @{@"label": @"Warning / Service", @"pct": @50, @"charging": @NO, @"ac": @NO, @"warn": @YES, @"miss": @NO, @"lpm": @NO},
+            @{@"label": @"No Battery / Error", @"pct": @0, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @YES, @"lpm": @NO}
         ];
         
         CGFloat cardW = 180;
@@ -81,6 +82,7 @@ int main(int argc, const char * argv[]) {
             mock.isACConnected = [spec[@"ac"] boolValue];
             mock.isWarning = [spec[@"warn"] boolValue];
             mock.isMissing = [spec[@"miss"] boolValue];
+            mock.isLowPowerMode = [spec[@"lpm"] boolValue];
             
             NSImage *icon = [BatteryIconRenderer renderIconForBatteryInfo:mock
                                                                 colorMode:BatteryColorModeDynamic

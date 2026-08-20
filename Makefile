@@ -1,4 +1,4 @@
-.PHONY: all build dmg clean run
+.PHONY: all build dmg clean run test
 
 all: dmg
 
@@ -9,6 +9,11 @@ build:
 dmg: build
 	chmod +x scripts/create_dmg.sh
 	./scripts/create_dmg.sh
+
+test:
+	mkdir -p build
+	clang -fobjc-arc -framework Foundation src/LocalizationManager.m src/BatteryInfo.m scripts/test_localization.m -o build/test_localization
+	./build/test_localization
 
 run: build
 	open build/PrettierBattery.app

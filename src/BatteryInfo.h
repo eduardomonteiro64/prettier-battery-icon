@@ -33,6 +33,7 @@ typedef NS_ENUM(NSInteger, BatteryTextDisplay) {
 @property (nonatomic, assign) BOOL isFullyCharged;
 @property (nonatomic, assign) BOOL isWarning;
 @property (nonatomic, assign) BOOL isMissing;
+@property (nonatomic, assign) BOOL isLowPowerMode;
 @property (nonatomic, assign) NSInteger timeRemainingMinutes; // -1 if calculating / not available
 @property (nonatomic, assign) NSInteger cycleCount;
 @property (nonatomic, assign) double voltageVolts;
@@ -41,6 +42,13 @@ typedef NS_ENUM(NSInteger, BatteryTextDisplay) {
 @property (nonatomic, assign) NSInteger healthPercentage;
 @property (nonatomic, copy) NSString *condition;
 @property (nonatomic, copy) NSString *powerSourceDescription;
+
+@property (nonatomic, assign) NSInteger rawMaxCapacity;      // mAh (e.g. 3756)
+@property (nonatomic, assign) NSInteger designCapacity;      // mAh (e.g. 4382)
+@property (nonatomic, assign) double temperatureCelsius;     // °C (e.g. 36.3)
+@property (nonatomic, assign) NSInteger adapterWatts;        // W (e.g. 67, 0 if on battery/unknown)
+@property (nonatomic, copy) NSString *serialNumber;
+@property (nonatomic, copy) NSString *manufacturer;
 
 - (NSString *)formattedTimeRemaining;
 - (NSString *)formattedStateString;

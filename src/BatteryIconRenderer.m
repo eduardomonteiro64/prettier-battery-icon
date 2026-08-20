@@ -156,10 +156,13 @@
         CGFloat iconY = (iconHeight - 11.5) / 2.0;
         
         // 1. Determine Shell & Fill Colors
+        BOOL isWhiteOutline = (colorMode == BatteryColorModeDynamic || info.isLowPowerMode);
         NSColor *shellColor = isWhiteOutline ? [NSColor whiteColor] : [NSColor blackColor];
         NSColor *fillColor = nil;
         
-        if (colorMode == BatteryColorModeMonochrome) {
+        if (info.isLowPowerMode) {
+            fillColor = [NSColor colorWithSRGBRed:1.00 green:0.78 blue:0.10 alpha:1.0]; // Vivid Flat Yellow for Low Power Mode
+        } else if (colorMode == BatteryColorModeMonochrome) {
             fillColor = [NSColor blackColor];
         } else {
             if (info.isCharging) {
@@ -173,7 +176,7 @@
             }
         }
         
-        // 2. Draw Battery Shell (White in Dynamic mode)
+        // 2. Draw Battery Shell (White in Dynamic mode or Low Power Mode)
         CGFloat bodyW = 21.0;
         CGFloat bodyH = 11.5;
         NSRect bodyRect = NSMakeRect(startX, iconY, bodyW, bodyH);
@@ -182,7 +185,7 @@
         [shellColor setStroke];
         [bodyPath stroke];
         
-        // Terminal cap (White in Dynamic mode)
+        // Terminal cap (White in Dynamic mode or Low Power Mode)
         CGFloat capW = 1.5;
         CGFloat capH = 4.5;
         CGFloat capX = startX + bodyW + 1.25;
@@ -254,7 +257,7 @@
         return YES;
     }];
     
-    image.template = (colorMode == BatteryColorModeMonochrome);
+    image.template = (colorMode == BatteryColorModeMonochrome && !info.isLowPowerMode);
     return image;
 }
 

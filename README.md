@@ -20,17 +20,21 @@ A sleek, lightweight, and modern **flat battery monitor** for the macOS menu bar
 
 ## ✨ Features
 
+- **Direct Low Power Mode Control**:
+  - Toggle macOS **Low Power Mode** directly from the menu bar popup with a single click.
+  - Automatically switches the battery icon to **vivid flat yellow** in both Dynamic and Monochrome color modes when Low Power Mode is active.
 - **Modern Flat Icon Scheme**:
   - **Critical Battery (≤15%)**: Clean red indicator.
   - **Medium Battery (16%–40%)**: High-visibility amber/yellow indicator.
   - **Full / Normal Battery (>40%)**: Crisp green fill proportional to exact battery level.
+  - **Low Power Mode**: Distinctive yellow indicator across all percentages.
   - **Charging (Bolt)**: High-contrast lightning bolt overlay with golden/white fill.
   - **Power Connected (Plug)**: Power plug icon when connected to AC power and fully charged.
   - **Warning / Service Required**: Attention indicator (`⚠️`) if battery service is recommended.
   - **No Battery / Error**: Clean `X` badge.
 - **Color Schemes**:
   - **Dynamic (Default)**: Crisp white outline with vivid Red / Yellow / Green status fill.
-  - **Native Monochrome**: Automatically adapts to Light and Dark menu bar themes via macOS template rendering.
+  - **Native Monochrome**: Automatically adapts to Light and Dark menu bar themes via macOS template rendering (switches to yellow when Low Power Mode is on).
 - **Pixel-Perfect Native Typography**:
   - Uses the exact system menu bar font (`.AppleSystemUIFont` / SF Pro with monospaced digits at 13pt).
   - Matches the baseline alignment, weight, and size of the macOS clock and Control Center items.
@@ -40,6 +44,10 @@ A sleek, lightweight, and modern **flat battery monitor** for the macOS menu bar
   - **Real-Time Power Draw / Charge Rate** (in Watts).
   - **Voltage and Amperage** (in Volts and mA).
   - **Accurate Time Remaining** (time until empty or time until 100% full charge).
+- **Multi-Language Support (i18n)**:
+  - **English**, **Português (Brasil)**, and **Español**.
+  - Automatic **System Default** detection based on macOS system preferences.
+  - Dedicated **Language** submenu for instantaneous on-the-fly switching without app restarts.
 - **Flexible Menu Bar Display**:
   - Icon Only
   - Icon + Percentage
@@ -90,6 +98,9 @@ make dmg
 # Or build only the .app bundle (output to build/PrettierBattery.app)
 make build
 
+# Run unit and localization tests
+make test
+
 # Run directly from source
 make run
 
@@ -104,20 +115,26 @@ make clean
 ```
 prettier-battery-icon/
 ├── Info.plist                  # macOS Application Bundle metadata
-├── Makefile                    # Automation tasks (build, dmg, run, clean)
+├── Makefile                    # Automation tasks (build, dmg, test, run, clean)
 ├── README.md                   # Project documentation
 ├── LICENSE                     # MIT License
 ├── .gitignore                  # Git ignore rules
+├── Resources/                  # Localization bundles (.lproj)
+│   ├── en.lproj/               # English strings
+│   ├── pt-BR.lproj/            # Brazilian Portuguese strings
+│   └── es.lproj/               # Spanish strings
 ├── docs/
 │   └── preview.png             # Visual preview of battery states
 ├── scripts/
 │   ├── build.sh                # Native compilation & code-signing script
 │   ├── create_dmg.sh           # DMG disk image creation script
 │   ├── generate_icon.m         # AppIcon generator script
-│   └── generate_preview.m      # Preview renderer script
+│   ├── generate_preview.m      # Preview renderer script
+│   └── test_localization.m    # Localization test suite
 └── src/
     ├── main.m                  # Application entry point
     ├── AppDelegate.h / .m      # Menu bar controller & preferences
+    ├── LocalizationManager.h / .m # Multi-language & i18n management
     ├── BatteryInfo.h / .m      # Battery telemetry data model
     ├── BatteryMonitor.h / .m   # IOKit & power source monitoring engine
     └── BatteryIconRenderer.h / .m # Flat vector icon renderer

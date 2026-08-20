@@ -28,6 +28,12 @@
     <true/>
     <key>NSHighResolutionCapable</key>
     <true/>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>pt-BR</string>
+        <string>es</string>
+    </array>
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
 </dict>

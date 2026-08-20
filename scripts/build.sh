@@ -20,9 +20,12 @@ rm -rf "$APP_BUNDLE"
 mkdir -p "$APP_BUNDLE/Contents/MacOS"
 mkdir -p "$APP_BUNDLE/Contents/Resources"
 
-# 3. Copy Plist & Icon
-cp Info.plist "$APP_BUNDLE/Contents/Info.plist"
-cp build/AppIcon.icns "$APP_BUNDLE/Contents/Resources/AppIcon.icns"
+# 3. Copy Plist, Icon & Localization resources (use -X to discard extended attributes)
+cp -X Info.plist "$APP_BUNDLE/Contents/Info.plist"
+cp -X build/AppIcon.icns "$APP_BUNDLE/Contents/Resources/AppIcon.icns"
+if [ -d "Resources" ]; then
+    cp -RX Resources/ "$APP_BUNDLE/Contents/Resources/"
+fi
 
 # 4. Compile Application
 echo "--> Compiling native binary..."
@@ -36,6 +39,7 @@ clang -fobjc-arc \
       src/BatteryInfo.m \
       src/BatteryMonitor.m \
       src/BatteryIconRenderer.m \
+      src/LocalizationManager.m \
       src/AppDelegate.m \
       -o "$APP_BUNDLE/Contents/MacOS/PrettierBattery"
 
@@ -43,7 +47,9 @@ clang -fobjc-arc \
 echo "--> Code signing application bundle..."
 find "$APP_BUNDLE" -name ".DS_Store" -delete 2>/dev/null || true
 find "$APP_BUNDLE" -name "._*" -delete 2>/dev/null || true
-xattr -c -r "$APP_BUNDLE" 2>/dev/null || true
+dot_clean -m "$APP_BUNDLE" 2>/dev/null || true
+xattr -cr "$APP_BUNDLE" 2>/dev/null || true
+xattr -c "$APP_BUNDLE" 2>/dev/null || true
 xattr -d com.apple.FinderInfo "$APP_BUNDLE" 2>/dev/null || true
 codesign --force --deep --sign - "$APP_BUNDLE"
 
