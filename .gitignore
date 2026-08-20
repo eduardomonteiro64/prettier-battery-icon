@@ -1,0 +1,23 @@
+# macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Build and Packaging Artifacts
+build/
+*.dmg
+*.app
+AppIcon.iconset
+*.o
+*.dSYM/
+*.ipa
+cache/
+
+# User & IDE specific
+.idea/
+.vscode/
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
