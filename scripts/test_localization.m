@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "../src/LocalizationManager.h"
-#import "../src/BatteryInfo.h"
+#import "LocalizationManager.h"
+#import "BatteryInfo.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {

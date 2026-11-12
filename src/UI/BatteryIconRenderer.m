@@ -2,6 +2,14 @@
 
 @implementation BatteryIconRenderer
 
+- (NSImage *)renderIconForBatteryInfo:(BatteryInfo *)info
+                            colorMode:(BatteryColorMode)colorMode
+                   hasTrailingSpacing:(BOOL)hasTrailingSpacing {
+    return [[self class] renderIconForBatteryInfo:info
+                                        colorMode:colorMode
+                               hasTrailingSpacing:hasTrailingSpacing];
+}
+
 + (NSBezierPath *)lightningBoltInRect:(NSRect)rect {
     NSBezierPath *path = [NSBezierPath bezierPath];
     CGFloat w = rect.size.width;

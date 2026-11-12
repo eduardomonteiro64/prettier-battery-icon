@@ -32,15 +32,18 @@ echo "--> Compiling native binary..."
 clang -fobjc-arc \
       -O2 \
       -target arm64-apple-macos11.0 \
+      -Isrc/Models \
+      -Isrc/Protocols \
+      -Isrc/Services \
+      -Isrc/UI \
+      -Isrc/App \
       -framework Cocoa \
       -framework IOKit \
       -framework ServiceManagement \
-      src/main.m \
-      src/BatteryInfo.m \
-      src/BatteryMonitor.m \
-      src/BatteryIconRenderer.m \
-      src/LocalizationManager.m \
-      src/AppDelegate.m \
+      src/Models/*.m \
+      src/Services/*.m \
+      src/UI/*.m \
+      src/App/*.m \
       -o "$APP_BUNDLE/Contents/MacOS/PrettierBattery"
 
 # 5. Ad-hoc code sign

@@ -63,9 +63,9 @@ A sleek, lightweight, and modern **flat battery monitor** for the macOS menu bar
 
 ## 🚀 Installation
 
-### Option 1: Using the Pre-built DMG Installer
+### Option 1: Download from GitHub Releases
 
-1. Download or build the [`PrettierBattery.dmg`](PrettierBattery.dmg) installer.
+1. Download `PrettierBattery.dmg` from the [GitHub Releases](https://github.com/eduardomonteiro64/prettier-battery-icon/releases) page (when a release is published), or build it locally with `make dmg` (see [Building from Source](#-building-from-source)).
 2. Double-click `PrettierBattery.dmg` to mount the disk image.
 3. Drag **Prettier Battery** into your **Applications** folder.
 4. Launch **Prettier Battery** from your Applications folder or Launchpad.
@@ -132,12 +132,26 @@ prettier-battery-icon/
 │   ├── generate_preview.m      # Preview renderer script
 │   └── test_localization.m    # Localization test suite
 └── src/
-    ├── main.m                  # Application entry point
-    ├── AppDelegate.h / .m      # Menu bar controller & preferences
-    ├── LocalizationManager.h / .m # Multi-language & i18n management
-    ├── BatteryInfo.h / .m      # Battery telemetry data model
-    ├── BatteryMonitor.h / .m   # IOKit & power source monitoring engine
-    └── BatteryIconRenderer.h / .m # Flat vector icon renderer
+    ├── App/
+    │   ├── main.m                        # Application entry point
+    │   └── AppDelegate.h / .m            # Composition root & app lifecycle
+    ├── Models/
+    │   └── BatteryInfo.h / .m            # Battery telemetry data model
+    ├── Protocols/
+    │   └── BatteryProtocols.h            # Segregated service & UI protocols
+    ├── Services/
+    │   ├── BatteryMonitor.h / .m         # Monitoring lifecycle coordinator
+    │   ├── IOKitBatteryTelemetryProvider.h / .m # IOKit & AppleSmartBattery reader
+    │   ├── SystemProfilerHealthProvider.h / .m  # Official health % fetcher
+    │   ├── LowPowerModeController.h / .m # macOS Low Power Mode controller
+    │   ├── PreferencesStore.h / .m       # UserDefaults display preferences
+    │   ├── LaunchAtLoginService.h / .m   # SMAppService login item wrapper
+    │   └── LocalizationManager.h / .m    # Multi-language & i18n management
+    └── UI/
+        ├── BatteryIconRenderer.h / .m    # Flat vector icon renderer
+        ├── StatusBarController.h / .m    # NSStatusItem & action coordinator
+        ├── StatusMenuBuilder.h / .m      # NSMenu & custom header builder
+        └── SystemSettingsNavigator.h / .m # System Settings & guide alerts
 ```
 
 ---

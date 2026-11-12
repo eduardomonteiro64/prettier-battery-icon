@@ -1,11 +1,12 @@
 #import <Foundation/Foundation.h>
+#import "BatteryProtocols.h"
 
 extern NSString * const kPBLocalizationDidChangeNotification;
 extern NSString * const kPBLanguagePrefKey;
 
 #define PBLocalizedString(key, comment) [[LocalizationManager sharedManager] localizedStringForKey:(key)]
 
-@interface LocalizationManager : NSObject
+@interface LocalizationManager : NSObject <Localizing>
 
 @property (nonatomic, copy) NSString *languageCode; // @"system", @"en", @"pt-BR", @"es"
 @property (nonatomic, readonly) NSString *effectiveLanguageCode; // @"en", @"pt-BR", @"es"
