@@ -76,3 +76,4 @@ Prettier Battery runs continuously in the macOS menu bar; **zero idle CPU, minim
 - Build `.app` bundle: `make build`
 - Build `.dmg` installer: `make dmg`
 - Releases are automated via `.github/workflows/release.yml` when pushing a `v*` tag.
+- **Release Workflow Rule**: After `make test` and `make build` succeed, always commit changes, push `main` to `origin`, and create & push the next `v*` semver patch tag (e.g., `v1.0.2`).
