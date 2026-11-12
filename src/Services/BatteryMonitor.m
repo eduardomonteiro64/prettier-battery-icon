@@ -10,6 +10,7 @@
     NSTimer *_healthRefreshTimer;
     NSInteger _cachedHealthPercentage;
     NSString *_cachedCondition;
+    BOOL _hasNotifiedOnce;
 }
 @property (nonatomic, strong) id<BatteryTelemetryProviding> telemetryProvider;
 @property (nonatomic, strong) id<BatteryHealthProviding> healthProvider;
@@ -84,19 +85,23 @@ static void PowerSourceCallback(void *context) {
     }
 
     if (!_pollTimer) {
-        _pollTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
+        // Event-driven IOKit callbacks handle instant updates; 60s coalesced timer is a lightweight fallback.
+        _pollTimer = [NSTimer scheduledTimerWithTimeInterval:60.0
                                                       target:self
                                                     selector:@selector(updateAndNotify)
                                                     userInfo:nil
                                                      repeats:YES];
+        _pollTimer.tolerance = 15.0;
     }
 
     if (!_healthRefreshTimer) {
-        _healthRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:600.0
+        // Official battery health changes over months; refresh every 6 hours with coalescing.
+        _healthRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:21600.0
                                                                target:self
                                                              selector:@selector(refreshSystemHealthInBackground)
                                                              userInfo:nil
                                                               repeats:YES];
+        _healthRefreshTimer.tolerance = 1800.0;
     }
 }
 
@@ -148,9 +153,25 @@ static void PowerSourceCallback(void *context) {
 }
 
 - (void)updateAndNotify {
-    self.currentInfo = [self fetchCurrentInfo];
+    BatteryInfo *previous = self.currentInfo;
+    BatteryInfo *next = [self fetchCurrentInfo];
+    self.currentInfo = next;
+
+    BOOL unchanged = _hasNotifiedOnce && previous &&
+        previous.percentage == next.percentage &&
+        previous.state == next.state &&
+        previous.isLowPowerMode == next.isLowPowerMode &&
+        previous.timeRemainingMinutes == next.timeRemainingMinutes &&
+        previous.healthPercentage == next.healthPercentage &&
+        [previous.condition isEqualToString:next.condition ?: @""];
+
+    if (unchanged) {
+        return;
+    }
+
+    _hasNotifiedOnce = YES;
     if ([self.delegate respondsToSelector:@selector(batteryMonitorDidUpdateInfo:)]) {
-        [self.delegate batteryMonitorDidUpdateInfo:self.currentInfo];
+        [self.delegate batteryMonitorDidUpdateInfo:next];
     }
 }
 

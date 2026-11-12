@@ -13,6 +13,14 @@
 @property (nonatomic, strong) NSStatusItem *statusItem;
 @property (nonatomic, strong) NSMenu *statusMenu;
 @property (nonatomic, strong) BatteryInfo *latestInfo;
+
+@property (nonatomic, assign) BOOL hasRenderedOnce;
+@property (nonatomic, assign) NSInteger lastRenderedPercentage;
+@property (nonatomic, assign) BatteryState lastRenderedState;
+@property (nonatomic, assign) BOOL lastRenderedLowPowerMode;
+@property (nonatomic, assign) NSInteger lastRenderedTimeMinutes;
+@property (nonatomic, assign) BatteryColorMode lastRenderedColorMode;
+@property (nonatomic, assign) BatteryTextDisplay lastRenderedTextDisplay;
 @end
 
 @implementation StatusBarController
@@ -63,6 +71,7 @@
 
 - (void)refreshLocalization {
     self.statusItem.button.toolTip = [self.localizer localizedStringForKey:@"Prettier Battery"];
+    self.hasRenderedOnce = NO;
     [self updateWithBatteryInfo:self.latestInfo];
 }
 
@@ -79,6 +88,26 @@
 
     BatteryColorMode colorMode = self.preferences.colorMode;
     BatteryTextDisplay textDisplay = self.preferences.textDisplay;
+
+    // Skip expensive vector icon & attributed string allocation when visible state is unchanged.
+    BOOL unchanged = self.hasRenderedOnce &&
+        self.lastRenderedPercentage == self.latestInfo.percentage &&
+        self.lastRenderedState == self.latestInfo.state &&
+        self.lastRenderedLowPowerMode == self.latestInfo.isLowPowerMode &&
+        self.lastRenderedTimeMinutes == self.latestInfo.timeRemainingMinutes &&
+        self.lastRenderedColorMode == colorMode &&
+        self.lastRenderedTextDisplay == textDisplay;
+    if (unchanged) {
+        return;
+    }
+
+    self.hasRenderedOnce = YES;
+    self.lastRenderedPercentage = self.latestInfo.percentage;
+    self.lastRenderedState = self.latestInfo.state;
+    self.lastRenderedLowPowerMode = self.latestInfo.isLowPowerMode;
+    self.lastRenderedTimeMinutes = self.latestInfo.timeRemainingMinutes;
+    self.lastRenderedColorMode = colorMode;
+    self.lastRenderedTextDisplay = textDisplay;
 
     if (textDisplay == BatteryTextDisplayPercentageOnly) {
         button.image = nil;
@@ -126,7 +155,8 @@
 #pragma mark - NSMenuDelegate
 
 - (void)menuNeedsUpdate:(NSMenu *)menu {
-    BatteryInfo *info = self.latestInfo ?: [self.batteryMonitor fetchCurrentInfo];
+    BatteryInfo *info = [self.batteryMonitor fetchCurrentInfo] ?: self.latestInfo;
+    self.latestInfo = info;
     [self.menuBuilder populateMenu:menu withInfo:info actionHandler:self];
 }
 
