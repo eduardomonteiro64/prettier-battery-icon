@@ -40,8 +40,8 @@ int main(int argc, const char * argv[]) {
         
         NSArray *items = @[
             @{@"label": @"Critical Battery (≤15%)", @"pct": @10, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO, @"lpm": @NO},
-            @{@"label": @"Medium Battery (16–40%)", @"pct": @30, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO, @"lpm": @NO},
-            @{@"label": @"Full Battery (>40%)", @"pct": @100, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO, @"lpm": @NO},
+            @{@"label": @"Normal Battery (>15%)", @"pct": @30, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO, @"lpm": @NO},
+            @{@"label": @"Full Battery (100%)", @"pct": @100, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO, @"lpm": @NO},
             @{@"label": @"Low Power Mode (Yellow)", @"pct": @80, @"charging": @NO, @"ac": @NO, @"warn": @NO, @"miss": @NO, @"lpm": @YES},
             @{@"label": @"Charging (Bolt)", @"pct": @65, @"charging": @YES, @"ac": @YES, @"warn": @NO, @"miss": @NO, @"lpm": @NO},
             @{@"label": @"Power Connected (Plug)", @"pct": @100, @"charging": @NO, @"ac": @YES, @"warn": @NO, @"miss": @NO, @"lpm": @NO},

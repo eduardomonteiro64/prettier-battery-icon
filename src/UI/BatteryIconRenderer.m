@@ -177,8 +177,6 @@
                 fillColor = [NSColor colorWithSRGBRed:0.20 green:0.75 blue:0.30 alpha:1.0]; // Vivid Flat Green
             } else if (info.percentage <= 15) {
                 fillColor = [NSColor colorWithSRGBRed:0.95 green:0.22 blue:0.22 alpha:1.0]; // Vivid Flat Red
-            } else if (info.percentage <= 40) {
-                fillColor = [NSColor colorWithSRGBRed:1.00 green:0.78 blue:0.10 alpha:1.0]; // Vivid Flat Yellow
             } else {
                 fillColor = [NSColor colorWithSRGBRed:0.20 green:0.75 blue:0.30 alpha:1.0]; // Vivid Flat Green
             }

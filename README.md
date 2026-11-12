@@ -25,8 +25,7 @@ A sleek, lightweight, and modern **flat battery monitor** for the macOS menu bar
   - Automatically switches the battery icon to **vivid flat yellow** in both Dynamic and Monochrome color modes when Low Power Mode is active.
 - **Modern Flat Icon Scheme**:
   - **Critical Battery (≤15%)**: Clean red indicator.
-  - **Medium Battery (16%–40%)**: High-visibility amber/yellow indicator.
-  - **Full / Normal Battery (>40%)**: Crisp green fill proportional to exact battery level.
+  - **Normal / Full Battery (>15%)**: Crisp green fill proportional to exact battery level.
   - **Low Power Mode**: Distinctive yellow indicator across all percentages.
   - **Charging (Bolt)**: High-contrast lightning bolt overlay with golden/white fill.
   - **Power Connected (Plug)**: Power plug icon when connected to AC power and fully charged.
