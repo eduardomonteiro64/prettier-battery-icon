@@ -8,7 +8,7 @@
   <a href="#-features">Features</a> •
   <a href="#-installation">Installation</a> •
   <a href="#-how-to-hide-the-default-macos-battery-icon">Hide Default Icon</a> •
-  <a href="#-building-from-source">Building from Source</a> •
+  <a href="#building-from-source">Building from Source</a> •
   <a href="#-license">License</a>
 </p>
 
@@ -65,7 +65,7 @@ A sleek, lightweight, and modern **flat battery monitor** for the macOS menu bar
 
 ### Option 1: Download from GitHub Releases
 
-1. Download `PrettierBattery.dmg` from the [GitHub Releases](https://github.com/eduardomonteiro64/prettier-battery-icon/releases) page (when a release is published), or build it locally with `make dmg` (see [Building from Source](#-building-from-source)).
+1. Download `PrettierBattery.dmg` from the [GitHub Releases](https://github.com/eduardomonteiro64/prettier-battery-icon/releases) page (when a release is published), or build it locally with `make dmg` (see [Building from Source](#building-from-source)).
 2. Double-click `PrettierBattery.dmg` to mount the disk image.
 3. Drag **Prettier Battery** into your **Applications** folder.
 4. Launch **Prettier Battery** from your Applications folder or Launchpad.
@@ -82,6 +82,8 @@ To enjoy a clean menu bar with only Prettier Battery:
 4. Change the setting to **"Don't Show in Menu Bar"**.
 
 ---
+
+<a id="building-from-source"></a>
 
 ## 🛠️ Building from Source
 
